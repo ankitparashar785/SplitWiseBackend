@@ -13,6 +13,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
     private JwtHelper jwtHelper;
 
     @Autowired
@@ -32,11 +36,12 @@ public class AuthController {
     private ModelMapper modelMapper;
 
     @Autowired
-    private CustomUserDetailsServiceImpl userDetailsService;
+    private UserDetailsService userDetailsService;
     @PostMapping("/login")
     public ResponseEntity<JwtResponse>loginUser(@RequestBody JwtRequest request) {
+        this.doAuthenticate(request.getEmail(),request.getPassword());
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-        System.out.println(userDetails.getUsername());
+        System.out.println("Test");
         String token = jwtHelper.generateToken(userDetails);
         JwtResponse jwtResponse=new JwtResponse();
         jwtResponse.setJwtToken(token);
@@ -45,8 +50,10 @@ public class AuthController {
     }
     private void doAuthenticate(String email, String password) {
         UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(email,password);
+
         try{
             manager.authenticate(authenticationToken);
+            System.out.println("inside do authenticate");
         }catch (BadCredentialsException e){
             throw new BadCredentialsException(e.getMessage());
         }

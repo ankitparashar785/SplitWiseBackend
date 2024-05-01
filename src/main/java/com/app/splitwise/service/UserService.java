@@ -4,5 +4,5 @@ import com.app.splitwise.dtos.UserDto;
 
 public interface UserService {
 
-    public UserDto registerUser(UserDto userDto);
+     UserDto registerUser(UserDto userDto);
 }

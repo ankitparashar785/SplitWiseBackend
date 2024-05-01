@@ -26,10 +26,14 @@ public class UserServiceImpl implements UserService {
     public UserDto registerUser(UserDto userDto) {
         String s = UUID.randomUUID().toString();
         userDto.setId(s);
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userDto.setConfirmPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        String password=userDto.getPassword();
+        userDto.setPassword(passwordEncoder.encode(password));
+        userDto.setConfirmPassword(passwordEncoder.encode(password));
         User user=modelMapper.map(userDto, User.class);
+
         userRepository.save(user);
+        System.out.println("Testing service");
         return userDto;
     }
 

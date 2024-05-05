@@ -28,7 +28,9 @@ public class SecurityConfig {
     private static final String[] AUTH_WHITELIST = {
             // -- Swagger UI v3 (OpenAPI)
            "/users/register",
-            "/auth/login"
+            "/auth/login",
+            "/group/create",
+            "group/addUser"
 
     };
     @Bean

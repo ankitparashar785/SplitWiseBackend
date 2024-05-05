@@ -1,9 +1,6 @@
 package com.app.splitwise.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +35,9 @@ public class User implements UserDetails {
     private String password;
     @Column(length = 200)
     private String confirmPassword;
+    @ManyToOne
+    @JoinColumn(name = "groupId")
+    private Group group;
 
 
     @Override
@@ -48,6 +48,20 @@ public class User implements UserDetails {
     @Override
     public boolean isAccountNonExpired() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "Id='" + Id + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                ", group=" + group +
+                '}';
     }
 
     @Override
